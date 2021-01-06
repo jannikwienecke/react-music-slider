@@ -1,6 +1,16 @@
 {
-  "name": "react-media-slider",
-  "version": "0.1.0",
+  "name": "react-music-slider",
+  "description": "reactmusicslider",
+  "keywords": [
+    "react",
+    "slider",
+    "media",
+    "music",
+    "video"
+  ],
+  "version": "1.0.0",
+  "author": "jannikwienecke",
+  "repository": "jannikwienecke/react-music-slider",
   "main": "build/index.js",
   "scripts": {
     "start": "node scripts/start.js",
@@ -9,7 +19,16 @@
     "test": "node scripts/test.js"
   },
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+    "@types/jest": "^26.0.19",
+    "@types/node": "^14.14.20",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "react-draggable": "^4.4.3",
+    "typescript": "^4.1.3"
+  },
   "devDependencies": {
     "@babel/core": "7.6.0",
     "@svgr/webpack": "4.3.2",
@@ -128,11 +147,6 @@
     "watchPlugins": [
       "jest-watch-typeahead/filename",
       "jest-watch-typeahead/testname"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "react-app"
     ]
   }
 }

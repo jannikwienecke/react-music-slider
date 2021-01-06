@@ -1,8 +1,6 @@
-import Example from './components/Example';
-import SecondExample from './components/SecondExample';
+import { Slider } from "./components/Slider";
+import { useSlider } from "./hooks/useSlider";
 
-export default Example;
+export default Slider;
 
-export {
-  SecondExample,
-};
+export { useSlider };
