@@ -1,8 +1,7 @@
 import React from "react";
 import { PropsStylesPointer } from "../types";
 import "./ProgressBarPointer.css";
-
-export let widthPointerElement = 15;
+import { widthPointerElement } from "../hooks/useProgressBar";
 export interface PointerElementProps {
   hover: boolean;
   stylesPointer?: PropsStylesPointer;

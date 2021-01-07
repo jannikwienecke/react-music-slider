@@ -1,9 +1,11 @@
 import React from "react";
-import { widthPointerElement } from "../components/ProgressBarPointer";
 import { ProgressBarProps } from "../types";
+
+export let widthPointerElement = 15;
 
 export const useProgressBar = ({
   handleChange,
+  onEnd,
   play,
   currentMs,
   mediaId,
@@ -18,7 +20,7 @@ export const useProgressBar = ({
   );
 
   const pointerRef = React.useRef<HTMLDivElement>(null);
-  const intervallRef = React.useRef<NodeJS.Timer | undefined>();
+  const intervallRef = React.useRef<Number | undefined>();
   const progressBarRef = React.useRef<HTMLDivElement>(null);
   const isDragging = React.useRef(false);
 
@@ -34,7 +36,17 @@ export const useProgressBar = ({
     clearAllIntervalls();
 
     // RUN USER FUNCTION
-    handleChange(newMsPosition);
+    handleChange(newMsPosition)
+      .then((ms) => {
+        setPlaybackProgress(ms / totalMs);
+        startIntervall();
+      })
+      .catch((error) => {
+        console.log("error in Slider", error);
+        setPlaybackProgress(0);
+        setPositionPointer(0);
+        clearAllIntervalls();
+      });
   };
 
   const handleClickProgressBar = (
@@ -80,7 +92,7 @@ export const useProgressBar = ({
     setPositionPointer((newMsPosition / totalMs) * getWidthProgressBar());
   };
 
-  const handleDragEnd = async (
+  const handleDragEnd = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     setIsHoveringProgressBar(false);
@@ -92,7 +104,7 @@ export const useProgressBar = ({
   const startIntervall = React.useCallback(() => {
     if (!play) return;
 
-    intervallRef.current = setInterval(() => {
+    intervallRef.current = window.setInterval(() => {
       setPlaybackProgress((position: number) => {
         return position + 1 / totalMs;
       });
@@ -101,9 +113,13 @@ export const useProgressBar = ({
 
   React.useEffect(() => {
     if (playbackProgress) {
-      setPositionPointer(playbackProgress * getWidthProgressBar());
+      if (playbackProgress.toFixed(2) === "1.00") {
+        clearAllIntervalls();
+        // USER FUNCTION
+        onEnd();
+      } else setPositionPointer(playbackProgress * getWidthProgressBar());
     }
-  }, [playbackProgress]);
+  }, [playbackProgress, onEnd]);
 
   React.useEffect(() => {
     startIntervall();

@@ -2,12 +2,19 @@ import React from "react";
 import { useProgressBar } from "../hooks/useProgressBar";
 import { ProgressBarProps } from "../types";
 import { Pointer } from "./Pointer";
-import { ProgressBarSiderContainer } from "./ProgressBarSiderContainer";
+import { ProgressBarSideContainer } from "./ProgressBarSideContainer";
 
 import "./Slider.css";
 
-export const Slider: React.FC<ProgressBarProps> = ({
+/**
+ *
+ * This Component allows to control and track the progress of music, video ... media types
+ */
+
+// * @param handleChange: Must Return a promise containing the ms that is send to the media service
+const Slider: React.FC<ProgressBarProps> = ({
   handleChange,
+  onEnd,
   play,
   totalMs,
   mediaId,
@@ -19,6 +26,7 @@ export const Slider: React.FC<ProgressBarProps> = ({
   const pB = useProgressBar({
     play,
     handleChange,
+    onEnd,
     currentMs,
     mediaId,
     totalMs,
@@ -47,13 +55,15 @@ export const Slider: React.FC<ProgressBarProps> = ({
       onMouseOver={pB.handleHoverProgressBar}
       onMouseLeave={pB.handleMouseLeave}
     >
-      <ProgressBarSiderContainer
+      <ProgressBarSideContainer
         progress={pB.playbackProgress}
         hover={pB.isHoveringProgressBar}
         stylesSliderProgress={stylesSliderProgress}
       >
         <Pointer pB={pB} stylesPointer={stylesPointer} />
-      </ProgressBarSiderContainer>
+      </ProgressBarSideContainer>
     </div>
   );
 };
+
+export default Slider;

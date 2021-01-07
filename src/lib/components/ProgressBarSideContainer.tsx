@@ -13,7 +13,7 @@ interface ProgressBarSiderContainerProps {
  * This Component displays the progress of the song when hovering on the Progress bar
  * Progress is the value of the current milliseconds of the song / total milliseconds of the song
  */
-export const ProgressBarSiderContainer: React.FC<ProgressBarSiderContainerProps> = ({
+export const ProgressBarSideContainer: React.FC<ProgressBarSiderContainerProps> = ({
   hover,
   children,
   progress,
@@ -28,7 +28,8 @@ export const ProgressBarSiderContainer: React.FC<ProgressBarSiderContainerProps>
 
   const styles = {
     ...{
-      width: `${progress * 100}%`,
+      cursor: "pointer",
+      width: `${progress * 100 + 0.5}%`,
       height: "100%",
       backgroundColor: "#ccc",
     },

@@ -23,7 +23,8 @@ export interface PropsStylesPointer {
   left?: string;
 }
 export interface ProgressBarProps {
-  handleChange: (newMs: number) => void;
+  handleChange: (newMs: number) => Promise<number>;
+  onEnd: () => void;
   play: boolean;
   currentMs: number;
   totalMs: number;
