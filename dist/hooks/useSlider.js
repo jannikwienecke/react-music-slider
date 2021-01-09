@@ -11,7 +11,8 @@ import React from "react";
 export const useSlider = (onChangeCallBack) => {
     const [play, setPlay] = React.useState(false);
     const [currentMs, setCurrentMs] = React.useState(0);
-    const onChange = (ms) => __awaiter(void 0, void 0, void 0, function* () {
+    const [media, setMedia] = React.useState({ mediaId: 1, totalMs: 200000 });
+    const onChange = React.useCallback((ms) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             yield onChangeCallBack(ms);
             return ms;
@@ -19,12 +20,14 @@ export const useSlider = (onChangeCallBack) => {
         catch (error) {
             return Promise.reject("ERROR");
         }
-    });
+    }), []);
     return {
         play,
         setPlay,
         currentMs,
         setCurrentMs,
+        setMedia,
+        media,
         onChange,
     };
 };

@@ -22,11 +22,14 @@
   "dependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
     "@bit/bit.envs.compilers.typescript": "^3.1.53",
+    "@emotion/babel-plugin-jsx-pragmatic": "^0.1.5",
+    "@emotion/react": "^11.1.4",
     "@types/jest": "^26.0.19",
     "@types/node": "^14.14.20",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "next": "^10.0.5",
     "react-draggable": "^4.4.3",
     "typescript": "^4.1.3"
   },

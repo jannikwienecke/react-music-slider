@@ -3,14 +3,11 @@ import { useProgressBar } from "../hooks/useProgressBar";
 import { Pointer } from "./Pointer";
 import { ProgressBarSideContainer } from "./ProgressBarSideContainer";
 import "./Slider.css";
-const Slider = ({ handleChange, onEnd, play, totalMs, mediaId, currentMs, stylesSlider, stylesSliderProgress, stylesPointer, }) => {
+const Slider = ({ handleChange, onEnd, state, stylesSlider, stylesSliderProgress, stylesPointer, }) => {
     const pB = useProgressBar({
-        play,
         handleChange,
         onEnd,
-        currentMs,
-        mediaId,
-        totalMs,
+        state,
     });
     const styles = Object.assign({
         backgroundColor: "rgba(75, 85, 99, 1)",
@@ -22,4 +19,4 @@ const Slider = ({ handleChange, onEnd, play, totalMs, mediaId, currentMs, styles
         React.createElement(ProgressBarSideContainer, { progress: pB.playbackProgress, hover: pB.isHoveringProgressBar, stylesSliderProgress: stylesSliderProgress },
             React.createElement(Pointer, { pB: pB, stylesPointer: stylesPointer }))));
 };
-export default Slider;
+export default React.memo(Slider);

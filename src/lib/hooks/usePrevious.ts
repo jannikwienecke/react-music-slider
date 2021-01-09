@@ -1,16 +1,16 @@
-import React from 'react'
+import React from "react";
 
-export function usePrevious(value: any) {
+export function usePrevious<T>(value: T): T | undefined {
   // The ref object is a generic container whose current property is mutable ...
   // ... and can hold any value, similar to an instance property on a class
 
-  const ref = React.useRef()
+  const ref = React.useRef<T>();
 
   // Store current value in ref
   React.useEffect(() => {
-    ref.current = value
-  }, [value]) // Only re-run if value changes
+    ref.current = value;
+  }, [value]); // Only re-run if value changes
 
   // Return previous value (happens before update in useEffect above)
-  return ref.current
+  return ref.current;
 }

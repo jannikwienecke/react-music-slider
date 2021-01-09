@@ -1,55 +1,61 @@
 import React from "react";
-import { ProgressBarProps } from "../types";
+import { ProgressBarProps, StateSliderProps } from "../types";
 import { usePrevious } from "./usePrevious";
+// import { usePrevious } from "./usePrevious";
 
 export let widthPointerElement = 15;
 
 export const useProgressBar = ({
   handleChange,
   onEnd,
-  play,
-  currentMs,
-  mediaId,
-  totalMs,
+  state,
 }: ProgressBarProps) => {
   const [positionPointer, setPositionPointer] = React.useState(0);
   const [isHoveringProgressBar, setIsHoveringProgressBar] = React.useState(
     false
   );
 
+  const {
+    isPlaying: play,
+    totalMsSong: totalMs,
+    currentMsSong: currentMs,
+  } = state;
+
   const [playbackProgress, setPlaybackProgress] = React.useState(
     currentMs / totalMs
   );
 
   const pointerRef = React.useRef<HTMLDivElement>(null);
-  const intervallRef = React.useRef<Number | undefined>();
+  const intervallRef = React.useRef<number | undefined>();
   const progressBarRef = React.useRef<HTMLDivElement>(null);
   const isDragging = React.useRef(false);
-  const [positionChanged, setPositionChanged] = React.useState(false);
-
   const startProgressBar = progressBarRef.current?.getBoundingClientRect().left;
 
+  // ====== FUNCTION THAT IS CALLED WHENEVER THE
+  // ====== USER MANUALLY CHANGES THE POSITION OF POINTER
+  // ====== e.g DRAGGING OR CLICkING
   const _handlePositionChange = (eventXValue: number) => {
     if (startProgressBar === undefined) return;
-
-    setPositionChanged(true);
 
     const newXValue = eventXValue - startProgressBar;
 
     const newDisplayPosition = getNewDisplayPositionPointer(newXValue);
     const newMsPosition = getPositionMs(newDisplayPosition);
+
     setPlaybackProgress(newMsPosition / totalMs);
 
     clearAllIntervalls();
 
     if (!handleChange) {
       console.warn("Please Provide a handleChange Function");
+      return;
     }
 
     // RUN USER FUNCTION
     handleChange(newMsPosition);
   };
 
+  // ==== HANDLE MOUSE CLICk AND HOVER =========
   const handleClickProgressBar = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -66,10 +72,11 @@ export const useProgressBar = ({
     if (isDragging.current) return;
     setIsHoveringProgressBar(false);
   };
+  // =====================
 
+  // ========== DRAGGING HANDLER =============
   const handleDragStart = () => {
     isDragging.current = true;
-
     clearAllIntervalls();
   };
 
@@ -103,24 +110,9 @@ export const useProgressBar = ({
       isDragging.current = false;
     }, 0);
   };
+  // =================END DRAGGING HANDLER==========================
 
-  const startIntervall = React.useCallback(() => {
-    if (!play) return;
-
-    console.log("In Function startIntervall!");
-
-    intervallRef.current = undefined;
-
-    intervallRef.current = window.setInterval(() => {
-      setPlaybackProgress((position: number) => {
-        const currentMs = position * totalMs;
-        const newProcent = (currentMs + 10) / totalMs;
-
-        return newProcent;
-      });
-    }, 10);
-  }, [totalMs, play]);
-
+  // ========HANDLE END - PROGRESS === 100% =======
   React.useEffect(() => {
     if (playbackProgress) {
       if (playbackProgress.toFixed(2) === "1.00") {
@@ -130,44 +122,9 @@ export const useProgressBar = ({
       } else setPositionPointer(playbackProgress * getWidthProgressBar());
     }
   }, [playbackProgress, onEnd]);
+  // ===================END HANDLE END==========
 
-  // HANDLE MILLISECONDS POSITION CHANGES FROM OUTSIDE
-  const prevCurrentMs = usePrevious(currentMs);
-  React.useEffect(() => {
-    if (prevCurrentMs !== currentMs) {
-      setPlaybackProgress(currentMs / totalMs);
-    }
-  }, [currentMs, totalMs, prevCurrentMs]);
-
-  // HANDLE MEDIA CHANGES
-  const prevMediaId = usePrevious(mediaId);
-  React.useEffect(() => {
-    if (!prevMediaId) return;
-
-    if (prevMediaId && mediaId !== prevMediaId) {
-      console.log("Start Intervall --- Media Changed");
-      setPlaybackProgress(0);
-      clearAllIntervalls();
-      startIntervall();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mediaId]);
-
-  // HANDLE PAUSE
-  React.useEffect(() => {
-    if (!play) {
-      clearAllIntervalls();
-    }
-  }, [play]);
-
-  // WHEN EVERTHING IS LOADED START INTERVALL
-  React.useEffect(() => {
-    if (play && mediaId !== undefined && currentMs !== undefined) {
-      console.log("Start Intervall -- [play, mediaId, currentMs]");
-      startIntervall();
-    }
-  }, [play, mediaId, currentMs, positionChanged, startIntervall]);
-
+  // ======= HELPER FUNCTIONS============
   const getWidthProgressBar = () => {
     if (!progressBarRef.current) return 0;
     return progressBarRef.current.getBoundingClientRect().width;
@@ -190,11 +147,47 @@ export const useProgressBar = ({
   const getNewDisplayPositionPointer = (eventXValue: number) => {
     return eventXValue - widthPointerElement / 2;
   };
+  // ================END HELPER FUNCTIONS ======================
 
+  // ========== START INTERVAL FOR SETTING THE POSITION ======
+  // ========== OF THE POINTER AND PROGRESS ==================
+  const startIntervall = React.useCallback(() => {
+    if (!play) return;
+
+    clearInterval(intervallRef.current);
+
+    intervallRef.current = window.setInterval(() => {
+      setPlaybackProgress((position: number) => {
+        const currentMsValue = position * totalMs;
+        const newProcent = (currentMsValue + 50) / totalMs;
+
+        return newProcent;
+      });
+    }, 50);
+  }, [totalMs, play]);
+  //===================END INTEVALL===========================
+
+  //============ CLEAR INTERVALL ==========
   const clearAllIntervalls = () => {
-    for (var i = 1; i < 999; i++) clearInterval(i);
-    intervallRef.current = undefined;
+    if (!intervallRef.current) return;
+    clearInterval(intervallRef.current);
   };
+  // ==========================
+
+  const prevState = usePrevious<StateSliderProps>(state);
+  React.useEffect(() => {
+    // console.log(`EVALUATE STATE: `, state);
+
+    window.clearInterval(intervallRef.current);
+
+    // console.log("currentMsSong=", state.currentMsSong);
+    // console.log("prevMsSong=", prevState?.currentMsSong);
+    if (state.currentMsSong !== prevState?.currentMsSong) {
+      setPlaybackProgress(state.currentMsSong / state.totalMsSong);
+    }
+
+    if (state.isPlaying) startIntervall();
+  }, [state]);
 
   return {
     handleClickProgressBar,

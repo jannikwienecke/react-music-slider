@@ -15,21 +15,16 @@ import "./Slider.css";
 const Slider: React.FC<ProgressBarProps> = ({
   handleChange,
   onEnd,
-  play,
-  totalMs,
-  mediaId,
-  currentMs,
+  state,
   stylesSlider,
   stylesSliderProgress,
   stylesPointer,
 }) => {
   const pB = useProgressBar({
-    play,
     handleChange,
     onEnd,
-    currentMs,
-    mediaId,
-    totalMs,
+
+    state,
   });
 
   const styles = {
@@ -66,4 +61,4 @@ const Slider: React.FC<ProgressBarProps> = ({
   );
 };
 
-export default Slider;
+export default React.memo(Slider);

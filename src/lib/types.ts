@@ -22,13 +22,19 @@ export interface PropsStylesPointer {
   top?: string;
   left?: string;
 }
+
+export interface StateSliderProps {
+  isPlaying: boolean;
+  currentMediaId: number;
+  currentMsSong: number;
+  totalMsSong: number;
+}
+
 export interface ProgressBarProps {
   handleChange: (newMs: number) => void;
   onEnd: () => void;
-  play: boolean;
-  currentMs: number;
-  totalMs: number;
-  mediaId: number;
+
+  state: StateSliderProps;
 
   stylesSlider?: PropsStylesSlider;
   stylesSliderProgress?: PropsStyleSliderProgress;
