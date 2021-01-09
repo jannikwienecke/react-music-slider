@@ -42,8 +42,13 @@ const App = () => {
 
   const startInterval = () => {
     stateUpdateRef.current = window.setInterval(() => {
+<<<<<<< HEAD
       // console.log("mediaIdRef====", mediaRef);
       // console.log("playRef====", playRef);
+=======
+      console.log("mediaIdRef====", mediaRef);
+      console.log("playRef====", playRef);
+>>>>>>> aad48941d2fa83d5351d13a58453e46a73e59ea3
       // console.log("currentMsRef====", currentMsRef);
 
       setState({
@@ -52,7 +57,11 @@ const App = () => {
         isPlaying: playRef.current,
         totalMsSong: mediaRef.current.totalMs,
       });
+<<<<<<< HEAD
     }, 100);
+=======
+    }, 2000);
+>>>>>>> aad48941d2fa83d5351d13a58453e46a73e59ea3
   };
 
   React.useEffect(() => {

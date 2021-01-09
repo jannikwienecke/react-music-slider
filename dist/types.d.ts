@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /// <reference types="react" />
 export interface useProgressBarProps {
     startMs: number;
@@ -49,3 +50,9 @@ export interface ReturnValueUseProgressBarProps {
     playbackProgress: number;
     positionPointer: number;
 }
+=======
+import { ProgressBarProps } from '@bit/jannikwienecke.personal.react-slider-types';
+export { ProgressBarProps };
+import { StateSliderProps } from '@bit/jannikwienecke.personal.react-slider-types';
+export { StateSliderProps };
+>>>>>>> aad48941d2fa83d5351d13a58453e46a73e59ea3

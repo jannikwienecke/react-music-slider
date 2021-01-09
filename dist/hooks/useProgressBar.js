@@ -112,9 +112,13 @@ export const useProgressBar = ({ handleChange, onEnd, state, }) => {
     const prevState = usePrevious(state);
     React.useEffect(() => {
         window.clearInterval(intervallRef.current);
+<<<<<<< HEAD
         if (state.currentMsSong !== (prevState === null || prevState === void 0 ? void 0 : prevState.currentMsSong)) {
             setPlaybackProgress(state.currentMsSong / state.totalMsSong);
         }
+=======
+        setPlaybackProgress(state.currentMsSong / state.totalMsSong);
+>>>>>>> aad48941d2fa83d5351d13a58453e46a73e59ea3
         if (state.isPlaying)
             startIntervall();
     }, [state]);
