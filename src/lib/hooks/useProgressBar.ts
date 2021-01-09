@@ -1,5 +1,6 @@
 import React from "react";
 import { ProgressBarProps } from "../types";
+import { usePrevious } from "./usePrevious";
 
 export let widthPointerElement = 15;
 
@@ -15,6 +16,7 @@ export const useProgressBar = ({
   const [isHoveringProgressBar, setIsHoveringProgressBar] = React.useState(
     false
   );
+
   const [playbackProgress, setPlaybackProgress] = React.useState(
     currentMs / totalMs
   );
@@ -23,30 +25,29 @@ export const useProgressBar = ({
   const intervallRef = React.useRef<Number | undefined>();
   const progressBarRef = React.useRef<HTMLDivElement>(null);
   const isDragging = React.useRef(false);
+  const [positionChanged, setPositionChanged] = React.useState(false);
 
   const startProgressBar = progressBarRef.current?.getBoundingClientRect().left;
 
   const _handlePositionChange = (eventXValue: number) => {
     if (startProgressBar === undefined) return;
+
+    setPositionChanged(true);
+
     const newXValue = eventXValue - startProgressBar;
 
     const newDisplayPosition = getNewDisplayPositionPointer(newXValue);
     const newMsPosition = getPositionMs(newDisplayPosition);
     setPlaybackProgress(newMsPosition / totalMs);
+
     clearAllIntervalls();
 
+    if (!handleChange) {
+      console.warn("Please Provide a handleChange Function");
+    }
+
     // RUN USER FUNCTION
-    handleChange(newMsPosition)
-      .then((ms) => {
-        setPlaybackProgress(ms / totalMs);
-        startIntervall();
-      })
-      .catch((error) => {
-        console.log("error in Slider", error);
-        setPlaybackProgress(0);
-        setPositionPointer(0);
-        clearAllIntervalls();
-      });
+    handleChange(newMsPosition);
   };
 
   const handleClickProgressBar = (
@@ -95,20 +96,29 @@ export const useProgressBar = ({
   const handleDragEnd = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    setIsHoveringProgressBar(false);
-    isDragging.current = false;
-
     _handlePositionChange(event.pageX);
+
+    setIsHoveringProgressBar(false);
+    setTimeout(() => {
+      isDragging.current = false;
+    }, 0);
   };
 
   const startIntervall = React.useCallback(() => {
     if (!play) return;
 
+    console.log("In Function startIntervall!");
+
+    intervallRef.current = undefined;
+
     intervallRef.current = window.setInterval(() => {
       setPlaybackProgress((position: number) => {
-        return position + 1 / totalMs;
+        const currentMs = position * totalMs;
+        const newProcent = (currentMs + 10) / totalMs;
+
+        return newProcent;
       });
-    }, 100);
+    }, 10);
   }, [totalMs, play]);
 
   React.useEffect(() => {
@@ -121,27 +131,42 @@ export const useProgressBar = ({
     }
   }, [playbackProgress, onEnd]);
 
+  // HANDLE MILLISECONDS POSITION CHANGES FROM OUTSIDE
+  const prevCurrentMs = usePrevious(currentMs);
   React.useEffect(() => {
-    startIntervall();
-  }, [startIntervall]);
+    if (prevCurrentMs !== currentMs) {
+      setPlaybackProgress(currentMs / totalMs);
+    }
+  }, [currentMs, totalMs, prevCurrentMs]);
 
+  // HANDLE MEDIA CHANGES
+  const prevMediaId = usePrevious(mediaId);
   React.useEffect(() => {
-    currentMs && startIntervall();
-  }, [currentMs, startIntervall]);
+    if (!prevMediaId) return;
 
-  React.useEffect(() => {
-    setPlaybackProgress(0);
-    clearAllIntervalls();
-    startIntervall();
-  }, [mediaId, startIntervall]);
+    if (prevMediaId && mediaId !== prevMediaId) {
+      console.log("Start Intervall --- Media Changed");
+      setPlaybackProgress(0);
+      clearAllIntervalls();
+      startIntervall();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mediaId]);
 
+  // HANDLE PAUSE
   React.useEffect(() => {
     if (!play) {
       clearAllIntervalls();
-    } else {
+    }
+  }, [play]);
+
+  // WHEN EVERTHING IS LOADED START INTERVALL
+  React.useEffect(() => {
+    if (play && mediaId !== undefined && currentMs !== undefined) {
+      console.log("Start Intervall -- [play, mediaId, currentMs]");
       startIntervall();
     }
-  }, [play, startIntervall]);
+  }, [play, mediaId, currentMs, positionChanged, startIntervall]);
 
   const getWidthProgressBar = () => {
     if (!progressBarRef.current) return 0;
@@ -168,6 +193,7 @@ export const useProgressBar = ({
 
   const clearAllIntervalls = () => {
     for (var i = 1; i < 999; i++) clearInterval(i);
+    intervallRef.current = undefined;
   };
 
   return {

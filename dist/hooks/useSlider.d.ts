@@ -1,5 +1,5 @@
 import React from "react";
-export declare const useSlider: (onChangeCallBack: (ms: number) => Promise<number>) => {
+export declare const useSlider: (onChangeCallBack: (ms: number) => void) => {
     play: boolean;
     setPlay: React.Dispatch<React.SetStateAction<boolean>>;
     currentMs: number;

@@ -1,8 +1,6 @@
 import React from "react";
 
-export const useSlider = (
-  onChangeCallBack: (ms: number) => Promise<number>
-) => {
+export const useSlider = (onChangeCallBack: (ms: number) => void) => {
   const [play, setPlay] = React.useState(false);
   const [currentMs, setCurrentMs] = React.useState(0);
 
