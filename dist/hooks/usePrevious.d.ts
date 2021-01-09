@@ -1,2 +1,2 @@
-import { usePrevious } from '@bit/use-previous';
+import { usePrevious } from '@bit/jannikwienecke.personal.use-previous';
 export { usePrevious };

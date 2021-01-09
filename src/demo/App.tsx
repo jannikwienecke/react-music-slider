@@ -11,12 +11,12 @@ const App = () => {
     setCurrentMs,
     setPlay,
     play,
-    setMedia,
+    // setMedia,
     media,
   } = useSlider((ms) => {
     setTimeout(() => {
       setCurrentMs(ms);
-    }, 100);
+    }, 2000);
   });
 
   const [state, setState] = React.useState<StateSliderProps>({
@@ -26,13 +26,13 @@ const App = () => {
     totalMsSong: 200000,
   });
 
-  React.useEffect(() => {
-    window.setInterval(() => {
-      setMedia((media) => {
-        return { mediaId: media.mediaId + 1, totalMs: Math.random() * 200000 };
-      });
-    }, 3000);
-  }, [setMedia, media]);
+  // React.useEffect(() => {
+  //   window.setInterval(() => {
+  //     setMedia((media) => {
+  //       return { mediaId: media.mediaId + 1, totalMs: Math.random() * 200000 };
+  //     });
+  //   }, 3000);
+  // }, [setMedia, media]);
 
   React.useEffect(() => {}, [state]);
 
@@ -42,13 +42,8 @@ const App = () => {
 
   const startInterval = () => {
     stateUpdateRef.current = window.setInterval(() => {
-<<<<<<< HEAD
       // console.log("mediaIdRef====", mediaRef);
       // console.log("playRef====", playRef);
-=======
-      console.log("mediaIdRef====", mediaRef);
-      console.log("playRef====", playRef);
->>>>>>> aad48941d2fa83d5351d13a58453e46a73e59ea3
       // console.log("currentMsRef====", currentMsRef);
 
       setState({
@@ -57,11 +52,7 @@ const App = () => {
         isPlaying: playRef.current,
         totalMsSong: mediaRef.current.totalMs,
       });
-<<<<<<< HEAD
-    }, 100);
-=======
     }, 2000);
->>>>>>> aad48941d2fa83d5351d13a58453e46a73e59ea3
   };
 
   React.useEffect(() => {
@@ -103,6 +94,7 @@ const App = () => {
       <Slider
         state={state}
         handleChange={onChange}
+        handleDragStart={React.useCallback(() => console.log("drag start"), [])}
         onEnd={React.useCallback(() => console.log("end"), [])}
       />
     </div>

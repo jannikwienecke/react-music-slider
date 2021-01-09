@@ -1,7 +1,7 @@
 import React from "react";
 import { usePrevious } from "./usePrevious";
 export let widthPointerElement = 15;
-export const useProgressBar = ({ handleChange, onEnd, state, }) => {
+export const useProgressBar = ({ handleChange, handleDragStart: tellUserDragStart, onEnd, state, }) => {
     var _a;
     const [positionPointer, setPositionPointer] = React.useState(0);
     const [isHoveringProgressBar, setIsHoveringProgressBar] = React.useState(false);
@@ -19,7 +19,6 @@ export const useProgressBar = ({ handleChange, onEnd, state, }) => {
         const newDisplayPosition = getNewDisplayPositionPointer(newXValue);
         const newMsPosition = getPositionMs(newDisplayPosition);
         setPlaybackProgress(newMsPosition / totalMs);
-        clearAllIntervalls();
         if (!handleChange) {
             console.warn("Please Provide a handleChange Function");
             return;
@@ -29,7 +28,6 @@ export const useProgressBar = ({ handleChange, onEnd, state, }) => {
     const handleClickProgressBar = (event) => {
         if (isDragging.current)
             return;
-        clearAllIntervalls();
         _handlePositionChange(event.pageX);
     };
     const handleHoverProgressBar = () => {
@@ -42,6 +40,7 @@ export const useProgressBar = ({ handleChange, onEnd, state, }) => {
     };
     const handleDragStart = () => {
         isDragging.current = true;
+        tellUserDragStart();
         clearAllIntervalls();
     };
     const handleDragging = (event) => {
@@ -57,6 +56,7 @@ export const useProgressBar = ({ handleChange, onEnd, state, }) => {
     };
     const handleDragEnd = (event) => {
         _handlePositionChange(event.pageX);
+        startIntervall();
         setIsHoveringProgressBar(false);
         setTimeout(() => {
             isDragging.current = false;
@@ -112,13 +112,9 @@ export const useProgressBar = ({ handleChange, onEnd, state, }) => {
     const prevState = usePrevious(state);
     React.useEffect(() => {
         window.clearInterval(intervallRef.current);
-<<<<<<< HEAD
         if (state.currentMsSong !== (prevState === null || prevState === void 0 ? void 0 : prevState.currentMsSong)) {
             setPlaybackProgress(state.currentMsSong / state.totalMsSong);
         }
-=======
-        setPlaybackProgress(state.currentMsSong / state.totalMsSong);
->>>>>>> aad48941d2fa83d5351d13a58453e46a73e59ea3
         if (state.isPlaying)
             startIntervall();
     }, [state]);

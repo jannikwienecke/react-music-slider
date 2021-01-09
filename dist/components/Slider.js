@@ -3,9 +3,10 @@ import { useProgressBar } from "../hooks/useProgressBar";
 import { Pointer } from "./Pointer";
 import { ProgressBarSideContainer } from "./ProgressBarSideContainer";
 import "./Slider.css";
-const Slider = ({ handleChange, onEnd, state, stylesSlider, stylesSliderProgress, stylesPointer, }) => {
+const Slider = ({ handleChange, handleDragStart, onEnd, state, stylesSlider, stylesSliderProgress, stylesPointer, }) => {
     const pB = useProgressBar({
         handleChange,
+        handleDragStart,
         onEnd,
         state,
     });
