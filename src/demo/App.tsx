@@ -4,34 +4,43 @@ import Slider, { useSlider } from "../lib";
 const App = () => {
   const [currentMs, setCurrentMs] = React.useState(0);
   const [play, setPlay] = React.useState(false);
+  const [status, setStatus] = React.useState<"idle" | "loading" | "success">(
+    "idle"
+  );
 
-  const { state, handleDragStart, handleEnd, handleMsChange } = useSlider({
+  const onMsChange = (ms: number) => {
+    setStatus("loading");
+    setTimeout(() => {
+      setCurrentMs(ms);
+      setStatus("success");
+      setTimeout(() => {
+        setStatus("idle");
+      }, 10);
+    }, 1000);
+  };
+
+  const { state, handleDragStart, handleMsChange } = useSlider({
     currentMsSong: currentMs,
     media: { mediaId: 1, totalMs: 200000 },
     isPlaying: play,
     stateUpdateIntervall: 3000,
     onSettledChange: () => console.log("setteld"),
-    onMsChange: (ms: number) => setCurrentMs(ms),
-    statusRequestMsChange: "idle",
+    onMsChange: onMsChange,
+    statusRequestMsChange: status,
   });
 
   return (
     <div>
       <div>{JSON.stringify(state)}</div>
       <button onClick={() => setPlay(!play)}>TOGGLE PLAY</button>
-      <button
-        onClick={() => {
-          setCurrentMs(Math.random() * 200000);
-        }}
-      >
+      <button onClick={() => onMsChange(Math.random() * 200000)}>
         Random Ms
       </button>
 
       <Slider
         state={state}
-        handleChange={handleMsChange}
-        handleDragStart={handleDragStart}
-        onEnd={handleEnd}
+        onChange={handleMsChange}
+        onDragStart={handleDragStart}
       />
     </div>
   );

@@ -31,9 +31,9 @@ export interface StateSliderProps {
 }
 
 export interface ProgressBarProps {
-  handleChange: (newMs: number) => void;
-  handleDragStart: () => void;
-  onEnd: () => void;
+  onChange: (newMs: number) => void;
+  onDragStart: () => void;
+  onEnd?: () => void;
 
   state: StateSliderProps;
 

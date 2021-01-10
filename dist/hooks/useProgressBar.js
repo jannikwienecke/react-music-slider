@@ -1,7 +1,7 @@
-import React from 'react';
-import { usePrevious } from './usePrevious';
+import React from "react";
+import { usePrevious } from "./usePrevious";
 export let widthPointerElement = 15;
-export const useProgressBar = ({ handleChange, handleDragStart: tellUserDragStart, onEnd, state, }) => {
+export const useProgressBar = ({ onChange, onDragStart, onEnd, state, }) => {
     var _a;
     const [positionPointer, setPositionPointer] = React.useState(0);
     const [isHoveringProgressBar, setIsHoveringProgressBar] = React.useState(false);
@@ -20,11 +20,7 @@ export const useProgressBar = ({ handleChange, handleDragStart: tellUserDragStar
         const newMsPosition = getPositionMs(newDisplayPosition);
         setPlaybackProgress(newMsPosition / totalMs);
         clearAllIntervalls();
-        if (!handleChange) {
-            console.warn('Please Provide a handleChange Function');
-            return;
-        }
-        handleChange(newMsPosition);
+        onChange(newMsPosition);
     };
     const handleClickProgressBar = (event) => {
         if (isDragging.current)
@@ -41,7 +37,7 @@ export const useProgressBar = ({ handleChange, handleDragStart: tellUserDragStar
     };
     const handleDragStart = () => {
         isDragging.current = true;
-        tellUserDragStart();
+        onDragStart();
         clearAllIntervalls();
     };
     const handleDragging = (event) => {
@@ -65,9 +61,9 @@ export const useProgressBar = ({ handleChange, handleDragStart: tellUserDragStar
     };
     React.useEffect(() => {
         if (playbackProgress) {
-            if (playbackProgress.toFixed(2) === '1.00') {
+            if (playbackProgress.toFixed(2) === "1.00") {
                 clearAllIntervalls();
-                onEnd();
+                onEnd && onEnd();
             }
             else
                 setPositionPointer(playbackProgress * getWidthProgressBar());
@@ -112,7 +108,7 @@ export const useProgressBar = ({ handleChange, handleDragStart: tellUserDragStar
     };
     const prevState = usePrevious(state);
     React.useEffect(() => {
-        console.log('----------------------');
+        console.log("----------------------");
         console.log(`EVALUATE STATE: `, state);
         window.clearInterval(intervallRef.current);
         if (state.currentMsSong !== (prevState === null || prevState === void 0 ? void 0 : prevState.currentMsSong)) {

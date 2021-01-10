@@ -1,5 +1,7 @@
 {
   "plugins": [
+    "babel-plugin-typescript-to-proptypes",
+
     "babel-plugin-transform-inline-environment-variables",
     "babel-plugin-macros",
     [
@@ -21,6 +23,7 @@
   "presets": [
     // ["@babel/preset-env", { "targets": { "node": "current" } }],
     "@babel/preset-typescript",
+    "@babel/preset-react",
     [
       "next/babel",
       {
