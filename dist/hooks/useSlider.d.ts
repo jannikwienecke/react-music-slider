@@ -1,16 +1,20 @@
-import React from "react";
-export declare const useSlider: (onChangeCallBack: (ms: number) => void) => {
-    play: boolean;
-    setPlay: React.Dispatch<React.SetStateAction<boolean>>;
-    currentMs: number;
-    setCurrentMs: React.Dispatch<React.SetStateAction<number>>;
-    setMedia: React.Dispatch<React.SetStateAction<{
-        mediaId: number;
-        totalMs: number;
-    }>>;
-    media: {
-        mediaId: number;
-        totalMs: number;
-    };
-    onChange: (ms: number) => Promise<number>;
+import { PropsUseStateRef } from "./useStateRef";
+export declare type Status = "idle" | "loading" | "success" | "error" | undefined;
+interface PropsUseMusicSlider extends PropsUseStateRef {
+    onSettledChange: () => void;
+    onMsChange: (ms: number) => void;
+    onEnd?: () => void;
+    statusRequestMsChange: Status;
+    stateUpdateIntervall?: number;
+}
+export declare type Media = {
+    mediaId: number;
+    totalMs: number;
 };
+export declare const useSlider: ({ isPlaying, currentMsSong, media, stateUpdateIntervall, onSettledChange, onMsChange, onEnd, statusRequestMsChange, }: PropsUseMusicSlider) => {
+    state: import("@bit/jannikwienecke.personal.react-slider-types").StateSliderProps;
+    handleMsChange: (ms: number) => void;
+    handleDragStart: () => void;
+    handleEnd: () => void;
+};
+export {};

@@ -13,7 +13,7 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "jannikwienecke.personal/react-slider@0.0.7": {
+    "jannikwienecke.personal/react-slider@0.1.1": {
         "files": [
             {
                 "name": "Pointer.tsx",
@@ -46,6 +46,16 @@
                 "test": false
             },
             {
+                "relativePath": "src/lib/hooks/useChangesHandler.ts",
+                "test": false,
+                "name": "useChangesHandler.ts"
+            },
+            {
+                "relativePath": "src/lib/hooks/useMediaState.ts",
+                "test": false,
+                "name": "useMediaState.ts"
+            },
+            {
                 "name": "useProgressBar.ts",
                 "relativePath": "src/lib/hooks/useProgressBar.ts",
                 "test": false
@@ -54,6 +64,16 @@
                 "name": "useSlider.ts",
                 "relativePath": "src/lib/hooks/useSlider.ts",
                 "test": false
+            },
+            {
+                "relativePath": "src/lib/hooks/useStateRef.ts",
+                "test": false,
+                "name": "useStateRef.ts"
+            },
+            {
+                "relativePath": "src/lib/hooks/useUpdateIntervall.ts",
+                "test": false,
+                "name": "useUpdateIntervall.ts"
             },
             {
                 "name": "index.ts",

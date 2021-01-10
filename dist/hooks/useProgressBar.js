@@ -1,5 +1,5 @@
-import React from "react";
-import { usePrevious } from "./usePrevious";
+import React from 'react';
+import { usePrevious } from './usePrevious';
 export let widthPointerElement = 15;
 export const useProgressBar = ({ handleChange, handleDragStart: tellUserDragStart, onEnd, state, }) => {
     var _a;
@@ -19,8 +19,9 @@ export const useProgressBar = ({ handleChange, handleDragStart: tellUserDragStar
         const newDisplayPosition = getNewDisplayPositionPointer(newXValue);
         const newMsPosition = getPositionMs(newDisplayPosition);
         setPlaybackProgress(newMsPosition / totalMs);
+        clearAllIntervalls();
         if (!handleChange) {
-            console.warn("Please Provide a handleChange Function");
+            console.warn('Please Provide a handleChange Function');
             return;
         }
         handleChange(newMsPosition);
@@ -64,7 +65,7 @@ export const useProgressBar = ({ handleChange, handleDragStart: tellUserDragStar
     };
     React.useEffect(() => {
         if (playbackProgress) {
-            if (playbackProgress.toFixed(2) === "1.00") {
+            if (playbackProgress.toFixed(2) === '1.00') {
                 clearAllIntervalls();
                 onEnd();
             }
@@ -111,6 +112,8 @@ export const useProgressBar = ({ handleChange, handleDragStart: tellUserDragStar
     };
     const prevState = usePrevious(state);
     React.useEffect(() => {
+        console.log('----------------------');
+        console.log(`EVALUATE STATE: `, state);
         window.clearInterval(intervallRef.current);
         if (state.currentMsSong !== (prevState === null || prevState === void 0 ? void 0 : prevState.currentMsSong)) {
             setPlaybackProgress(state.currentMsSong / state.totalMsSong);
