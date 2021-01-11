@@ -1,8 +1,8 @@
-import React from "react";
-import { useMediaState } from "./useMediaState";
-import { useStateRef } from "./useStateRef";
-import { useUpdateIntervall } from "./useUpdateIntervall";
-import { useChangesHandler } from "./useChangesHandler";
+import React from 'react';
+import { useMediaState } from './useMediaState';
+import { useStateRef } from './useStateRef';
+import { useUpdateIntervall } from './useUpdateIntervall';
+import { useChangesHandler } from './useChangesHandler';
 export const useSlider = ({ isPlaying, currentMsSong, media, stateUpdateIntervall, onSettledChange, onMsChange, onEnd, statusRequestMsChange, }) => {
     const changedMs = React.useRef();
     const stateRef = useStateRef({

@@ -1,11 +1,11 @@
-import React from "react";
-import { PropsStyleSliderProgress } from "../types";
-import "./Slider.css";
+import React from 'react'
+import { PropsStyleSliderProgress } from '../types'
+import './Slider.css'
 
 interface ProgressBarSiderContainerProps {
-  hover: boolean;
-  progress: number;
-  stylesSliderProgress?: PropsStyleSliderProgress;
+  hover: boolean
+  progress: number
+  stylesSliderProgress?: PropsStyleSliderProgress
 }
 
 /**
@@ -22,24 +22,24 @@ export const ProgressBarSideContainer: React.FC<ProgressBarSiderContainerProps> 
   const hoverStyles = hover
     ? {
         backgroundColor:
-          stylesSliderProgress?.backgroundColorOnHover || "rgba(16, 185, 129",
+          stylesSliderProgress?.backgroundColorOnHover || 'rgba(16, 185, 129',
       }
-    : {};
+    : {}
 
   const styles = {
     ...{
-      cursor: "pointer",
+      cursor: 'pointer',
       width: `${progress * 100 + 0.5}%`,
-      height: "100%",
-      backgroundColor: "#ccc",
+      height: '100%',
+      backgroundColor: '#ccc',
     },
     ...stylesSliderProgress,
     ...hoverStyles,
-  };
+  }
 
   return (
     <div className="slider-progress" style={{ ...styles }}>
       {children}
     </div>
-  );
-};
+  )
+}

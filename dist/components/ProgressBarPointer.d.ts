@@ -1,6 +1,6 @@
-import React from "react";
-import { PropsStylesPointer } from "../types";
-import "./ProgressBarPointer.css";
+import React from 'react';
+import { PropsStylesPointer } from '../types';
+import './ProgressBarPointer.css';
 export interface PointerElementProps {
     hover: boolean;
     stylesPointer?: PropsStylesPointer;

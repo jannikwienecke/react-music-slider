@@ -1,23 +1,23 @@
-import React from "react";
-import { useMediaState } from "./useMediaState";
-import { PropsUseStateRef, useStateRef } from "./useStateRef";
-import { useUpdateIntervall } from "./useUpdateIntervall";
-import { useChangesHandler } from "./useChangesHandler";
+import React from 'react'
+import { useMediaState } from './useMediaState'
+import { PropsUseStateRef, useStateRef } from './useStateRef'
+import { useUpdateIntervall } from './useUpdateIntervall'
+import { useChangesHandler } from './useChangesHandler'
 
-export type Status = "idle" | "loading" | "success" | "error" | undefined;
+export type Status = 'idle' | 'loading' | 'success' | 'error' | undefined
 
 interface PropsUseMusicSlider extends PropsUseStateRef {
-  onSettledChange: () => void;
-  onMsChange: (ms: number) => void;
-  onEnd?: () => void;
-  statusRequestMsChange: Status;
-  stateUpdateIntervall?: number;
+  onSettledChange: () => void
+  onMsChange: (ms: number) => void
+  onEnd?: () => void
+  statusRequestMsChange: Status
+  stateUpdateIntervall?: number
 }
 
 export type Media = {
-  mediaId: number;
-  totalMs: number;
-};
+  mediaId: number
+  totalMs: number
+}
 
 export const useSlider = ({
   isPlaying,
@@ -29,19 +29,19 @@ export const useSlider = ({
   onEnd,
   statusRequestMsChange,
 }: PropsUseMusicSlider) => {
-  const changedMs = React.useRef<undefined | number>();
+  const changedMs = React.useRef<undefined | number>()
 
   const stateRef = useStateRef({
     isPlaying,
     currentMsSong,
     media,
-  });
-  const { state, updateState, updateSelectedState } = useMediaState(stateRef);
+  })
+  const { state, updateState, updateSelectedState } = useMediaState(stateRef)
 
   const { stateUpdateRef, startIntervall } = useUpdateIntervall({
     updateState,
     stateUpdateIntervall: stateUpdateIntervall || 3000,
-  });
+  })
 
   useChangesHandler({
     isPlaying,
@@ -51,31 +51,31 @@ export const useSlider = ({
     statusRequestMsChange,
     onSettledChange,
     changedMs,
-  });
+  })
 
   const handleMsChange = (ms: number) => {
-    clearInterval(stateUpdateRef.current);
-    stateUpdateRef.current = undefined;
+    clearInterval(stateUpdateRef.current)
+    stateUpdateRef.current = undefined
 
-    onMsChange(ms);
+    onMsChange(ms)
 
-    changedMs.current = ms;
+    changedMs.current = ms
 
     if (!stateUpdateRef.current) {
-      startIntervall();
+      startIntervall()
     }
-  };
+  }
 
   const handleEnd = React.useCallback(() => {
-    onEnd && onEnd();
+    onEnd && onEnd()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   const handleDragStart = React.useCallback(() => {
-    clearInterval(stateUpdateRef.current);
-    stateUpdateRef.current = undefined;
+    clearInterval(stateUpdateRef.current)
+    stateUpdateRef.current = undefined
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
-  return { state, handleMsChange, handleDragStart, handleEnd };
-};
+  return { state, handleMsChange, handleDragStart, handleEnd }
+}

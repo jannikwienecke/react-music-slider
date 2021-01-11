@@ -1,13 +1,13 @@
-import React from "react";
-import { PropsStylesPointer } from "../types";
-import "./ProgressBarPointer.css";
-import { widthPointerElement } from "../hooks/useProgressBar";
+import React from 'react'
+import { PropsStylesPointer } from '../types'
+import './ProgressBarPointer.css'
+import { widthPointerElement } from '../hooks/useProgressBar'
 export interface PointerElementProps {
-  hover: boolean;
-  stylesPointer?: PropsStylesPointer;
+  hover: boolean
+  stylesPointer?: PropsStylesPointer
 }
 
-export type Ref = HTMLDivElement;
+export type Ref = HTMLDivElement
 
 export const PointerElement: React.FC<PointerElementProps> = ({
   hover,
@@ -15,20 +15,20 @@ export const PointerElement: React.FC<PointerElementProps> = ({
 }) => {
   const defaultStyles = {
     width: `${widthPointerElement}px`,
-    height: "15px",
-    backgroundColor: "lightgrey",
-    position: "absolute",
-    borderRadius: "10px",
-    top: "-3.5px",
-    left: "-1.75px",
-  };
+    height: '15px',
+    backgroundColor: 'lightgrey',
+    position: 'absolute',
+    borderRadius: '10px',
+    top: '-3.5px',
+    left: '-1.75px',
+  }
 
   const styles = hover
     ? {
         ...defaultStyles,
         ...stylesPointer,
       }
-    : {};
+    : {}
 
-  return <div className="slider-pointer" style={styles}></div>;
-};
+  return <div className="slider-pointer" style={styles}></div>
+}

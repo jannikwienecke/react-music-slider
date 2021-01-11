@@ -1,6 +1,6 @@
-import React from "react";
-import { StateSliderProps } from "../types";
-import { Media, Status } from "./useSlider";
+import React from 'react';
+import { StateSliderProps } from '../types';
+import { Media, Status } from './useSlider';
 export interface PropsUseChangesHandler {
     isPlaying: boolean;
     media: Media;

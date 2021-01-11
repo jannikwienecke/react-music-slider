@@ -1,5 +1,5 @@
-import { PropsUseStateRef } from "./useStateRef";
-export declare type Status = "idle" | "loading" | "success" | "error" | undefined;
+import { PropsUseStateRef } from './useStateRef';
+export declare type Status = 'idle' | 'loading' | 'success' | 'error' | undefined;
 interface PropsUseMusicSlider extends PropsUseStateRef {
     onSettledChange: () => void;
     onMsChange: (ms: number) => void;

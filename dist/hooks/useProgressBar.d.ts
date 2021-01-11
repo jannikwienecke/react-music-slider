@@ -1,5 +1,5 @@
-import React from "react";
-import { ProgressBarProps } from "../types";
+import React from 'react';
+import { ProgressBarProps } from '../types';
 export declare let widthPointerElement: number;
 export declare const useProgressBar: ({ onChange, onDragStart, onEnd, state, }: ProgressBarProps) => {
     handleClickProgressBar: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;

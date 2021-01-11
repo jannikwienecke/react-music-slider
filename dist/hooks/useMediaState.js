@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 export const useMediaState = ({ playRef, mediaRef, currentMsRef, }) => {
     const _getState = React.useCallback(() => {
         return {
@@ -13,7 +13,7 @@ export const useMediaState = ({ playRef, mediaRef, currentMsRef, }) => {
         setState(_getState());
     }, [_getState]);
     const updateSelectedState = React.useCallback((newState) => {
-        setState((state) => {
+        setState(state => {
             return Object.assign(Object.assign({}, state), newState);
         });
     }, []);

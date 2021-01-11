@@ -1,5 +1,5 @@
-import React from "react";
-import { usePrevious } from "./usePrevious";
+import React from 'react';
+import { usePrevious } from './usePrevious';
 export let widthPointerElement = 15;
 export const useProgressBar = ({ onChange, onDragStart, onEnd, state, }) => {
     var _a;
@@ -61,7 +61,7 @@ export const useProgressBar = ({ onChange, onDragStart, onEnd, state, }) => {
     };
     React.useEffect(() => {
         if (playbackProgress) {
-            if (playbackProgress.toFixed(2) === "1.00") {
+            if (playbackProgress.toFixed(2) === '1.00') {
                 clearAllIntervalls();
                 onEnd && onEnd();
             }
@@ -90,6 +90,7 @@ export const useProgressBar = ({ onChange, onDragStart, onEnd, state, }) => {
         return eventXValue - widthPointerElement / 2;
     };
     const startIntervall = React.useCallback(() => {
+        console.log('start.....');
         if (!play)
             return;
         clearInterval(intervallRef.current);
@@ -108,7 +109,7 @@ export const useProgressBar = ({ onChange, onDragStart, onEnd, state, }) => {
     };
     const prevState = usePrevious(state);
     React.useEffect(() => {
-        console.log("----------------------");
+        console.log('----------------------');
         console.log(`EVALUATE STATE: `, state);
         window.clearInterval(intervallRef.current);
         if (state.currentMsSong !== (prevState === null || prevState === void 0 ? void 0 : prevState.currentMsSong)) {

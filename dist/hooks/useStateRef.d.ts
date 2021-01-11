@@ -1,5 +1,5 @@
-import React from "react";
-import { Media } from "./useSlider";
+import React from 'react';
+import { Media } from './useSlider';
 export interface PropsStateRef {
     playRef: React.MutableRefObject<boolean>;
     mediaRef: React.MutableRefObject<{

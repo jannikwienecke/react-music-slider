@@ -1,10 +1,10 @@
-import React from "react";
-import { useProgressBar } from "../hooks/useProgressBar";
-import { ProgressBarProps } from "../types";
-import { Pointer } from "./Pointer";
-import { ProgressBarSideContainer } from "./ProgressBarSideContainer";
+import React from 'react'
+import { useProgressBar } from '../hooks/useProgressBar'
+import { ProgressBarProps } from '../types'
+import { Pointer } from './Pointer'
+import { ProgressBarSideContainer } from './ProgressBarSideContainer'
 
-import "./Slider.css";
+import './Slider.css'
 
 /**
  *
@@ -26,17 +26,17 @@ const Slider: React.FC<ProgressBarProps> = ({
     onDragStart,
     onEnd,
     state,
-  });
+  })
 
   const styles = {
     ...{
-      backgroundColor: "rgba(75, 85, 99, 1)",
-      height: "0.5rem",
-      width: "75%",
-      margin: "0 auto",
+      backgroundColor: 'rgba(75, 85, 99, 1)',
+      height: '0.5rem',
+      width: '75%',
+      margin: '0 auto',
     },
     ...stylesSlider,
-  };
+  }
 
   return (
     <div
@@ -59,7 +59,7 @@ const Slider: React.FC<ProgressBarProps> = ({
         <Pointer pB={pB} stylesPointer={stylesPointer} />
       </ProgressBarSideContainer>
     </div>
-  );
-};
+  )
+}
 
-export default React.memo(Slider);
+export default React.memo(Slider)

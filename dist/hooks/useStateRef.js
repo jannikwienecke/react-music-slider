@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 export const useStateRef = ({ isPlaying, currentMsSong, media, }) => {
     const playRef = React.useRef(isPlaying);
     const currentMsRef = React.useRef(currentMsSong);
@@ -6,7 +6,17 @@ export const useStateRef = ({ isPlaying, currentMsSong, media, }) => {
         mediaId: media.mediaId,
         totalMs: media.totalMs,
     });
+    const intervalRef = React.useRef();
+    const startIntervall = () => {
+        clearInterval(intervalRef.current);
+        intervalRef.current = 0;
+        currentMsRef.current += 130;
+        intervalRef.current = window.setInterval(() => {
+            currentMsRef.current += 100;
+        }, 100);
+    };
     React.useEffect(() => {
+        startIntervall();
         currentMsRef.current = currentMsSong;
     }, [currentMsSong]);
     React.useEffect(() => {
