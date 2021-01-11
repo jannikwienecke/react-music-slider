@@ -1,38 +1,148 @@
-This project was bootstrapped with [Create React Library](https://github.com/dimimikadze/create-react-library).
+# Slider for asynchron React-Applications
 
-All library files are located inside **src/lib** folder.
+## What it is
+*A react component that allows to* control your async media players - works best with api's such as 
+Spotify. Controlling the slider allows to automatically control the position of the song/media on all connected devices
 
-Inside **src/demo** folder, you can test your library while developing.
+## Installation
 
-## Available Scripts
+    npm i @bit/jannikwienecke.personal.react-slider
+	// or yarn
+	yarn add @bit/jannikwienecke.personal.react-slider
 
-In the project directory, you can run:
+## Usage Examples
 
-### `npm start` or `yarn start`
+###  Usage - MOST BASIC - Without External Control
+```jsx
+mport  React  from  "react";
+import  Slider  from  "../lib";
 
-Runs the library in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+const  App  =  ()  =>  {
 
-### `npm run test` or `yarn run test`
+	const  state  =  {
+		isPlaying:  true
+		currentMediaId: 1
+		currentMsSong: 10000
+		totalMsSong: 200000
+	}
+	
+	return  (
+		<Slider
+			state={state}
+			onChange={() => console.log("SLIDER POSITION CHANGED"}
+			onDragStart={() => console.log("USER DRAG START"}
+		/>
+	);
+};
+export  default  App;
+```
+----
+###  Usage - BASIC - Client State Control
+ ``` jsx
+import  React  from  "react";
+import  Slider,  {  useSlider  }  from  "../lib";
 
-Runs the test watcher in an interactive mode.
+const  App  =  ()  =>  {
+	const  [currentMs,  setCurrentMs]  =  React.useState(0);
+	const  [play,  setPlay]  =  React.useState(false);
+	const  [status,  setStatus]  =  React.useState<"idle"  |  "loading"  |  "success">(
+	"idle");
 
-### `npm run build` or `yarn build`
+	// MOCK AN API CALL TO THE SERVICE THAT IS MANAGING THE STATE - e.g. Spotify
+	const  onMsChange  =  (ms:  number)  =>  {
+		setStatus("loading");
+		setTimeout(()  =>  {
+			setCurrentMs(ms);
+			setStatus("success");
+			setTimeout(()  =>  {
+				setStatus("idle");
+			},  10);
+		},  1000);
+	};
 
-Builds the library for production to the `build` folder.
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### `npm publish`
+	const EXAMPLE_TOTAL_LENGTH_SONG = 200000
+	const EXAMPLE_STATE_UPDATE_INTERVALL = 3000
+	const EXAMPLE_MEDIA_ID = 3000
 
-Publishes the library to NPM.
 
-## Typescript
+	
+	// USE THE PROVIDED HOOK TO CONTROL THE CLIENT STATE
+	const  {  state,  handleDragStart,  handleMsChange  }  =  useSlider({
+		currentMsSong:  currentMs,
+		media:  {  mediaId: EXAMPLE_MEDIA_ID, totalMs: EXAMPLE_TOTAL_LENGTH_SONG  },
+		isPlaying: play,
+		stateUpdateIntervall: EXAMPLE_STATE_UPDATE_INTERVALL,
+		onSettledChange: () => console.log("api call successfully"),
+		onMsChange: onMsChange,
+		statusRequestMsChange: status,
+	});
 
-[Adding Typescript support](https://gist.github.com/DimiMikadze/f25e1c5c70fa003953afd40fa9042517)
 
-## Troubleshooting
+	return  (
+	<div>
+		<button  onClick={()  =>  setPlay(!play)}>TOGGLE PLAY</button>
+		<button  onClick={()  =>  onMsChange(Math.random()  *  200000)}>
+			Random Ms
+		</button>
 
-### Usage of other libraries within your library
+		<Slider
+			state={state}
+			onChange={handleMsChange}
+			onDragStart={handleDragStart}
+		/>
+	</div>
+	);
+};
+export  default  App;
+```
 
-- Add the library as a peer dependency in package.json (effectively requiring the calling project to provide this dependency)
-- Add the library as a dev dependency in package.json (effectively allowing this library to successfully build without complaining about not having this dependency)
-- Add the library to the externals config in your webpack.config file(s). By default, only react and react-dom are there, meaning that those are the only two libraries that you can use within your new shared library.
+## Props Slider
+| name | type | description|
+|--|--|--|
+| state | object |  | StateSliderProps |
+| onChange | function |  A Function that is called whenever a change to the Slider happens - Dragging / Clicking on the Slider |
+| onDragStart | function |  A Function that is called whenever a user starts to drag the slider
+| onEnd | function |  A Function that is called whenever the slider reached the end (currentMs === totalMs of the current media)
+| state | object |  see. StateSliderProps |
+| stylesSlider | object |   see. stylesSlider |
+| stylesSliderProgress | object |   see. stylesSliderProgress |
+| stylesPointer | object |   see. stylesPointer |
+
+---
+#### StateSliderProps
+| name  | type | description |
+|--|--|--|
+| currentMediaId | number  | required |
+| currentMsSong | number  | required |
+| totalMsSong | number  | required |
+| isPlaying | boolean  | required |
+
+---
+### stylesSlider [optional] 
+| name  | type | description |
+|--|--|--|
+| height | string  | optional |
+| width | string  | optional |
+| backgroundColor | string  | optional |
+| margin | string  | optional |
+
+---
+### stylesSliderProgress
+| name  | type | description |
+|--|--|--|
+| backgroundColor | string  | optional |
+| backgroundColorOnHover | string  | optional |
+---
+### stylesPointer
+| name  | type | description |
+|--|--|--|
+| width | string  | optional |
+| height | string  | optional |
+| backgroundColor | string  | optional |
+| borderRadius | string  | optional |
+| top | string  | optional |
+| left | string  | optional |
+
+
+
