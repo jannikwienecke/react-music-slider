@@ -41,7 +41,11 @@ export const useProgressBar = ({
     const newXValue = eventXValue - startProgressBar
 
     const newDisplayPosition = getNewDisplayPositionPointer(newXValue)
-    const newMsPosition = getPositionMs(newDisplayPosition)
+    let newMsPosition = getPositionMs(newDisplayPosition)
+    newMsPosition = handleBoundaries(newMsPosition, totalMs)
+
+    console.log('newMsPosition: ', newMsPosition)
+    console.log('totalMs: ', totalMs)
 
     setPlaybackProgress(newMsPosition / totalMs)
 
@@ -142,6 +146,18 @@ export const useProgressBar = ({
   const getNewDisplayPositionPointer = (eventXValue: number) => {
     return eventXValue - widthPointerElement / 2
   }
+
+  const handleBoundaries = (newMsPosition: number, totalMs: number) => {
+    if (newMsPosition > totalMs) {
+      setPositionPointer(playbackProgress * getWidthProgressBar())
+      return totalMs
+    } else if (newMsPosition < 0) {
+      setPositionPointer(0 * getWidthProgressBar())
+      return 0
+    }
+    return newMsPosition
+  }
+
   // ================END HELPER FUNCTIONS ======================
 
   // ========== START INTERVAL FOR SETTING THE POSITION ======
