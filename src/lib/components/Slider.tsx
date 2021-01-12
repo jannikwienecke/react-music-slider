@@ -17,6 +17,7 @@ const Slider: React.FC<ProgressBarProps> = ({
   onDragStart,
   onEnd,
   state,
+  disable,
   stylesSlider,
   stylesSliderProgress,
   stylesPointer,
@@ -51,13 +52,15 @@ const Slider: React.FC<ProgressBarProps> = ({
       onMouseOver={pB.handleHoverProgressBar}
       onMouseLeave={pB.handleMouseLeave}
     >
-      <ProgressBarSideContainer
-        progress={pB.playbackProgress}
-        hover={pB.isHoveringProgressBar}
-        stylesSliderProgress={stylesSliderProgress}
-      >
-        <Pointer pB={pB} stylesPointer={stylesPointer} />
-      </ProgressBarSideContainer>
+      {!disable && (
+        <ProgressBarSideContainer
+          progress={pB.playbackProgress}
+          hover={pB.isHoveringProgressBar}
+          stylesSliderProgress={stylesSliderProgress}
+        >
+          <Pointer pB={pB} stylesPointer={stylesPointer} />
+        </ProgressBarSideContainer>
+      )}
     </div>
   )
 }

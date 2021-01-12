@@ -17,7 +17,10 @@ export const useProgressBar = ({ onChange, onDragStart, onEnd, state, }) => {
             return;
         const newXValue = eventXValue - startProgressBar;
         const newDisplayPosition = getNewDisplayPositionPointer(newXValue);
-        const newMsPosition = getPositionMs(newDisplayPosition);
+        let newMsPosition = getPositionMs(newDisplayPosition);
+        newMsPosition = handleBoundaries(newMsPosition, totalMs);
+        console.log('newMsPosition: ', newMsPosition);
+        console.log('totalMs: ', totalMs);
         setPlaybackProgress(newMsPosition / totalMs);
         clearAllIntervalls();
         onChange(newMsPosition);
@@ -89,6 +92,17 @@ export const useProgressBar = ({ onChange, onDragStart, onEnd, state, }) => {
     const getNewDisplayPositionPointer = (eventXValue) => {
         return eventXValue - widthPointerElement / 2;
     };
+    const handleBoundaries = (newMsPosition, totalMs) => {
+        if (newMsPosition > totalMs) {
+            setPositionPointer(playbackProgress * getWidthProgressBar());
+            return totalMs;
+        }
+        else if (newMsPosition < 0) {
+            setPositionPointer(0 * getWidthProgressBar());
+            return 0;
+        }
+        return newMsPosition;
+    };
     const startIntervall = React.useCallback(() => {
         console.log('start.....');
         if (!play)
@@ -109,8 +123,6 @@ export const useProgressBar = ({ onChange, onDragStart, onEnd, state, }) => {
     };
     const prevState = usePrevious(state);
     React.useEffect(() => {
-        console.log('----------------------');
-        console.log(`EVALUATE STATE: `, state);
         window.clearInterval(intervallRef.current);
         if (state.currentMsSong !== (prevState === null || prevState === void 0 ? void 0 : prevState.currentMsSong)) {
             setPlaybackProgress(state.currentMsSong / state.totalMsSong);

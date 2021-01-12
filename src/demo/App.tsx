@@ -1,33 +1,33 @@
-import React from "react";
-import Slider, { useSlider } from "../lib";
+import React from 'react'
+import Slider, { useSlider } from '../lib'
 
 const App = () => {
-  const [currentMs, setCurrentMs] = React.useState(0);
-  const [play, setPlay] = React.useState(false);
-  const [status, setStatus] = React.useState<"idle" | "loading" | "success">(
-    "idle"
-  );
+  const [currentMs, setCurrentMs] = React.useState(0)
+  const [play, setPlay] = React.useState(false)
+  const [status, setStatus] = React.useState<'idle' | 'loading' | 'success'>(
+    'idle',
+  )
 
   const onMsChange = (ms: number) => {
-    setStatus("loading");
+    setStatus('loading')
     setTimeout(() => {
-      setCurrentMs(ms);
-      setStatus("success");
+      setCurrentMs(ms)
+      setStatus('success')
       setTimeout(() => {
-        setStatus("idle");
-      }, 10);
-    }, 1000);
-  };
+        setStatus('idle')
+      }, 10)
+    }, 1000)
+  }
 
   const { state, handleDragStart, handleMsChange } = useSlider({
     currentMsSong: currentMs,
     media: { mediaId: 1, totalMs: 200000 },
     isPlaying: play,
     stateUpdateIntervall: 3000,
-    onSettledChange: () => console.log("setteld"),
+    onSettledChange: () => console.log('setteld'),
     onMsChange: onMsChange,
     statusRequestMsChange: status,
-  });
+  })
 
   return (
     <div>
@@ -38,12 +38,13 @@ const App = () => {
       </button>
 
       <Slider
+        disable={false}
         state={state}
         onChange={handleMsChange}
         onDragStart={handleDragStart}
       />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
