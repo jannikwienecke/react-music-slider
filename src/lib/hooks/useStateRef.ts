@@ -40,7 +40,13 @@ export const useStateRef = ({
     }, 100)
   }
   React.useEffect(() => {
-    startIntervall()
+    if (playRef.current) {
+      startIntervall()
+    } else {
+      intervalRef.current && clearInterval(intervalRef.current)
+      intervalRef.current = 0
+    }
+
     currentMsRef.current = currentMsSong
   }, [currentMsSong])
 

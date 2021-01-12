@@ -13,7 +13,7 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "jannikwienecke.personal/react-slider@0.1.7": {
+    "jannikwienecke.personal/react-slider@0.1.8": {
         "files": [
             {
                 "name": "Pointer.tsx",

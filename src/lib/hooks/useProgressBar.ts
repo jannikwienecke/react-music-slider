@@ -175,9 +175,7 @@ export const useProgressBar = ({
 
   const prevState = usePrevious<StateSliderProps>(state)
   React.useEffect(() => {
-    console.log('----------------------')
-
-    console.log(`EVALUATE STATE: `, state)
+    // console.log(`EVALUATE STATE: `, state)
 
     window.clearInterval(intervallRef.current)
 
