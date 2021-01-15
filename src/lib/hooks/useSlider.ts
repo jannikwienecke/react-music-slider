@@ -3,6 +3,7 @@ import { useMediaState } from './useMediaState'
 import { PropsUseStateRef, useStateRef } from './useStateRef'
 import { useUpdateIntervall } from './useUpdateIntervall'
 import { useChangesHandler } from './useChangesHandler'
+import { StateSliderProps } from '../types'
 
 export type Status = 'idle' | 'loading' | 'success' | 'error' | undefined
 
@@ -77,5 +78,14 @@ export const useSlider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { state, handleMsChange, handleDragStart, handleEnd }
+  const getState = (): StateSliderProps => {
+    return {
+      currentMediaId: stateRef.mediaRef.current.mediaId,
+      totalMsSong: stateRef.mediaRef.current.totalMs,
+      currentMsSong: stateRef.currentMsRef.current,
+      isPlaying: stateRef.playRef.current,
+    }
+  }
+
+  return { state, handleMsChange, handleDragStart, handleEnd, getState }
 }

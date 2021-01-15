@@ -19,7 +19,7 @@ const App = () => {
     }, 1000)
   }
 
-  const { state, handleDragStart, handleMsChange } = useSlider({
+  const { state, handleDragStart, handleMsChange, getState } = useSlider({
     currentMsSong: currentMs,
     media: { mediaId: 1, totalMs: 200000 },
     isPlaying: play,
@@ -36,6 +36,7 @@ const App = () => {
       <button onClick={() => onMsChange(Math.random() * 200000)}>
         Random Ms
       </button>
+      <button onClick={() => console.log(getState())}>GET STATE</button>
 
       <Slider
         disable={false}
