@@ -41,8 +41,8 @@ export const useChangesHandler = ({
       prevStatusRequestMsChange === 'loading' &&
       statusRequestMsChange === 'success'
     ) {
-      console.log('success....')
-      updateSelectedState({ currentMsSong: changedMs.current || 0 })
+      changedMs.current &&
+        updateSelectedState({ currentMsSong: changedMs.current || 0 })
       onSettledChange()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
